@@ -103,17 +103,57 @@ ggplot(weather_df, aes(x = tmin, y = tmax)) +
 
 A more intersting plot
 
-```{r}
+```{r, collapse=TRUE}
 ggplot(weather_df, aes(x = date, y = tmax, color = name)) +
   geom_point(aes(size = prcp), alpha = .5) + 
   geom_smooth(se = FALSE) +
   facet_grid( ~ name)
 ```
 
-`geom_point` --> data points
-`geom_line` --> connects the dots
+### `geom_point` --> data points
+### `geom_line` --> connects the dots
 
+## Other plots 
 
+Same or different?
 
+```{r}
+ggplot(weather_df) + geom_point(aes(x = tmax, y = tmin), color = "blue")
+ggplot(weather_df) + geom_point(aes(x = tmax, y = tmin, color = "blue"))
+```
+
+## Univariate plots
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmax)) + 
+  geom_histogram() +
+    facet_grid(~name)
+
+ggplot(weather_df, aes(x = tmax, fill = name)) + 
+  geom_histogram(position = "dodge", binwidth = 2)
+
+ggplot(weather_df, aes(x = tmax, fill = name)) + 
+  geom_density(alpha = .5)
+```
+
+Boxplots
+
+```{r}
+ggplot(weather_df, aes(x = name, y = tmax)) + 
+  geom_boxplot()
+
+ggplot(weather_df, aes(x = name, y = tmax)) + 
+  geom_violin(aes(fill = name), color = "blue", alpha = .5) +
+  stat_summary(fun.y = median, geom = "point", color = "blue", 
+               size = 4)
+```
+
+```{r}
+ggplot(weather_df, aes(x = tmax, y = name)) +
+  geom_density_ridges()
+
+ggplot(weather_df, aes(x = tmax, y = name)) + 
+  geom_density_ridges(scale = .85)
+```
 
 
