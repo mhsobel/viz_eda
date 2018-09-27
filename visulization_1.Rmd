@@ -1,5 +1,5 @@
 ---
-title: "Visualization_1"
+title: "Visualization Pt 1"
 author: "Marisa Sobel"
 date: "9/27/2018"
 output: html_document
@@ -12,4 +12,108 @@ library(tidyverse)
 library(ggridges)
 
 ```
+
+```{r data_import, cache = TRUE}
+library(rnoaa)
+
+weather_df = 
+  rnoaa::meteo_pull_monitors(c("USW00094728", "USC00519397", "USS0023B17S"),
+                      var = c("PRCP", "TMIN", "TMAX"), 
+                      date_min = "2017-01-01",
+                      date_max = "2017-12-31") %>%
+  mutate(
+    name = recode(id, USW00094728 = "CentralPark_NY", 
+                      USC00519397 = "Waikiki_HA",
+                      USS0023B17S = "Waterhole_WA"),
+    tmin = tmin / 10,
+    tmax = tmax / 10) %>%
+  select(name, id, everything())
+weather_df
+```
+
+## Start a plot
+
+Look at `t max` vs `t min`
+
+Blank plot...
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax))
+```
+
+Scatterplot 
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+Scatterplot `CentralPark_NY` only, using pipes
+
+```{r, collapse=TRUE}
+weather_df %>% 
+  filter(name == "CentralPark_NY") %>% 
+  ggplot(aes( x = tmin, y = tmax)) +
+  geom_point()
+```
+
+Name and save
+
+```{r, collapse=TRUE}
+weather_plot = 
+  ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+## More plot options
+
+Add an aesthetic - colors different by place 
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name))
+```
+
+Add a geom
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .4) + 
+  # alpha blending level for transparency 
+  geom_smooth(se = FALSE)
+```
+
+putting `color = name` in the main `ggplot` object applies it to all geoms (globally rather than locally)
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .4) + 
+  geom_smooth(se = FALSE)
+```
+
+Facetting...
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(alpha = .4) + 
+  geom_smooth(se = FALSE) +
+  facet_grid( ~ name) 
+  # separate panels on `name` variable 
+```
+
+A more intersting plot
+
+```{r}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) +
+  geom_point(aes(size = prcp), alpha = .5) + 
+  geom_smooth(se = FALSE) +
+  facet_grid( ~ name)
+```
+
+`geom_point` --> data points
+`geom_line` --> connects the dots
+
+
+
+
 
