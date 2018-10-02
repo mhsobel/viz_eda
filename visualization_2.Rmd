@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(ggridges)
 library(patchwork)
+library(ggthemes)
 ```
 
 ```{r data_import, cache = TRUE}
@@ -34,3 +35,211 @@ weather_df =
   select(name, id, everything())
 weather_df
 ```
+
+
+## Start a plot
+
+First scatterplot
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    caption = "Data from the rnoaa package"
+    )
+```
+
+Tick marks and labels ...
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    caption = "Data from the rnoaa package"
+    ) + 
+  scale_x_continuous(breaks = c(-15, 0, 15), 
+                     labels = c("-15ºC", "0", "15"),   # option + 0 = º
+                     limits = c(-20, 30)) + 
+  scale_y_continuous(trans = "sqrt", 
+                     position = "right")
+```
+
+## Colors and themes
+
+Adjust color
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) + 
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    caption = "Data from the rnoaa package"
+  ) + 
+  scale_color_hue(name = "Location", 
+                  h = c(100, 300),         # range of hues 
+                  l = 50)    
+```
+
+Viridis package 
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) + 
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    caption = "Data from the rnoaa package"
+  ) + 
+  viridis::scale_color_viridis(
+    name = "Location", 
+    discrete = TRUE   # makes discrete from continuous scale 
+  ) + 
+  theme(legend.position = "bottom")
+```
+
+## Themes
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) + 
+  labs(
+    title = "Temperature plot",
+    x = "Minimum daily temperature (C)",
+    y = "Maxiumum daily temperature (C)",
+    caption = "Data from the rnoaa package"
+  ) + 
+  viridis::scale_color_viridis(
+    name = "Location", 
+    discrete = TRUE   # makes discrete from continuous scale 
+  ) + 
+  theme_bw() +        # ORDER MATTERS! - set theme first, then modify!
+  theme(legend.position = "bottom")
+```
+
+## Practice!
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) + 
+  geom_smooth(se = FALSE) + 
+  geom_point(aes(size = prcp), alpha = .75) + 
+  labs(
+    title = "Temperature Plot", 
+    x = "Date", 
+    y = "Max Daily Temp (ºC)",
+    caption = "Data from the rnoaa package"
+  ) +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  theme_minimal() + 
+  theme(legend.position = "bottom")
+```
+
+
+## Arguments to `geom_*`
+
+```{r, collapse=TRUE}
+centralpark_df = weather_df %>%  filter(name == "CentralPark_NY")
+waikiki_df = weather_df %>%  filter(name == "Waikiki_HA")
+
+ggplot(waikiki_df, aes(x = date, y = tmax, color = name)) +
+  geom_point() + 
+  geom_point(data = centralpark_df)
+
+```
+
+## patchwork 
+
+Separate the plots...
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid( ~ name) +
+  geom_point(aes(size = prcp), alpha = .75) + 
+  labs(
+    title = "Temperature Plot", 
+    x = "Date", 
+    y = "Max Daily Temp (ºC)",
+    caption = "Data from the rnoaa package"
+  ) +
+  viridis::scale_color_viridis(discrete = TRUE) +
+  theme_minimal() + 
+  theme(legend.position = "bottom")
+```
+
+...but sometime might want to make distinctly different plots!
+
+```{r, collapse=TRUE}
+tmax_tmin_p = ggplot(weather_df, aes(x = tmax, y = tmin, color = name)) + 
+  geom_point(alpha = .5) +
+  theme(legend.position = "none")
+
+prcp_dens_p = weather_df %>% 
+  filter(prcp > 0) %>% 
+  ggplot(aes(x = prcp, fill = name)) + 
+  geom_density(alpha = .5) + 
+  theme(legend.position = "none")
+
+tmax_date_p = ggplot(weather_df, aes(x = date, y = tmax, color = name)) + 
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) + 
+  theme(legend.position = "bottom")
+
+# stitching together fundamentally different plots
+(tmax_tmin_p + prcp_dens_p) / tmax_date_p
+```
+
+## Data manipulation 
+
+factors...they show up in the order of that factor
+
+```{r, collapse=TRUE}
+ggplot(weather_df, aes(x = date, y = tmax, fill = name)) + 
+  geom_violin()
+```
+
+Ordering factors that explicitly choose, rather than the way it is
+
+```{r, collapse=TRUE}
+# select the way you want the levels, "by hand"
+weather_df %>%
+  mutate(name = forcats::fct_relevel(name, c("Waikiki_HA", "CentralPark_NY", "Waterhole_WA"))) %>% 
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_violin(aes(fill = name), color = "blue", alpha = .5) + 
+  theme(legend.position = "bottom")
+
+# reorder name by tmax 
+weather_df %>%
+  mutate(name = forcats::fct_reorder(name, tmax)) %>% 
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_violin(aes(fill = name), color = "blue", alpha = .5) + 
+  theme(legend.position = "bottom")
+```
+
+## Advanced tidying...
+
+* tmax and tmin are different observations 
+* focus only on vars needed
+* want to go wide --> long
+
+```{r, collapse=TRUE}
+weather_df %>%
+  select(name, tmax, tmin) %>% 
+  gather(key = observation, value = temp, tmax:tmin) %>% 
+  ggplot(aes(x = temp, fill = observation)) +
+  geom_density(alpha = .5) + 
+  facet_grid(~name) + 
+  viridis::scale_fill_viridis(discrete = TRUE)
+```
+
+
+
+
