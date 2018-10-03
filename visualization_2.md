@@ -44,7 +44,7 @@ First scatterplot
         )
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-1-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-1-1.png" width="90%" />
 
 Tick marks and labels …
 
@@ -65,7 +65,7 @@ Tick marks and labels …
     ## Warning: Transformation introduced infinite values in continuous y-axis
     ## Warning: Removed 90 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-2-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-2-1.png" width="90%" />
 
 Colors and themes
 -----------------
@@ -85,7 +85,7 @@ Adjust color
                       l = 50)    
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-3-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-3-1.png" width="90%" />
 
 Viridis package
 
@@ -104,7 +104,7 @@ Viridis package
       theme(legend.position = "bottom")
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-4-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-4-1.png" width="90%" />
 
 Themes
 ------
@@ -125,7 +125,7 @@ Themes
       theme(legend.position = "bottom")
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-5-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-5-1.png" width="90%" />
 
 Practice!
 ---------
@@ -146,7 +146,7 @@ Practice!
     ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-6-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-6-1.png" width="90%" />
 
 Arguments to `geom_*`
 ---------------------
@@ -159,7 +159,7 @@ Arguments to `geom_*`
       geom_point(data = centralpark_df)
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-7-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-7-1.png" width="90%" />
 
 patchwork
 ---------
@@ -183,7 +183,7 @@ Separate the plots…
     ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-8-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-8-1.png" width="90%" />
 
 …but sometime might want to make distinctly different plots!
 
@@ -209,7 +209,7 @@ Separate the plots…
     ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-9-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-9-1.png" width="90%" />
 
 Data manipulation
 -----------------
@@ -220,7 +220,7 @@ factors…they show up in the order of that factor
       geom_violin()
     ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-10-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-10-1.png" width="90%" />
 
 Ordering factors that explicitly choose, rather than the way it is
 
@@ -232,7 +232,7 @@ Ordering factors that explicitly choose, rather than the way it is
       theme(legend.position = "bottom")
     ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-11-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-11-1.png" width="90%" />
 
 
     # reorder name by tmax 
@@ -243,7 +243,7 @@ Ordering factors that explicitly choose, rather than the way it is
       theme(legend.position = "bottom")
     ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-11-2.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-11-2.png" width="90%" />
 
 Advanced tidying…
 -----------------
@@ -263,4 +263,4 @@ Advanced tidying…
       viridis::scale_fill_viridis(discrete = TRUE)
     ## Warning: Removed 18 rows containing non-finite values (stat_density).
 
-<img src="visualization_2_copy_files/figure-markdown_strict/unnamed-chunk-12-1.png" width="90%" />
+<img src="visualization_2_files/figure-markdown_strict/unnamed-chunk-12-1.png" width="90%" />
